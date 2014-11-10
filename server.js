@@ -1,37 +1,37 @@
 require('shelljs/global');
-var jsesc = require('jsesc');
 
 if (!which('git')) {
 	echo('Sorry, this script requires git.');
 	exit(1);
 }
 
-//get parameters
-var node_params = [];
-process.argv.forEach(function (val, index, array) {
-	if (index >= 2) {
-		if (val.indexOf(' ') >= 0) {
-			node_params.push("\"" + val + "\"");
-		} else {
-			node_params.push(val);
+var node_params = get_params();
+process_params(node_params);
+
+function get_params() {
+	var node_params = [];
+	process.argv.forEach(function (val, index, array) {
+		if (index >= 2) {
+			if (val.indexOf(' ') >= 0) {
+				node_params.push("\"" + val + "\"");
+			} else {
+				node_params.push(val);
+			}
 		}
-	}
-});
+	});
+	return node_params;
+}
 
-var git_params = gen_git_params(node_params);
-run_com("git", git_params);
-
-
-function gen_git_params(params) {
+function process_params(params) {
 	git_params = [];
-	if (false) {
-		//do something
+	if (params[0] === "init-world") {
+		run_com("mkdir", ["./.gitr"]);
 	} else if (false) {
 		//do something else
 	} else {
 		git_params = params;
+		run_com("git", git_params);
 	}
-	return git_params;
 }
 
 function run_com(command, params) {
