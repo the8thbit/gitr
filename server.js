@@ -6,20 +6,25 @@ if (!which('git')) {
 	exit(1);
 }
 
-//generate call to git
-var exec_string = "git";
+//get parameters
+var params = [];
 process.argv.forEach(function (val, index, array) {
-	if (val.indexOf(' ') >= 0) {
-		val = "\"" + val + "\"";
-	}
-
 	if (index >= 2) {
-		exec_string += " " + jsesc(val);
+		if (val.indexOf(' ') >= 0) {
+			params.push("\"" + val + "\"");
+		} else {
+			params.push(val);
+		}
 	}
 });
 
-// Run external tool synchronously
-if (exec(exec_string).code !== 0) {
-	echo('Error: git failed.');
-	exit(1);
+run_git(params);
+
+function run_git(params) {
+	var exec_string = "git " + params.join(" ");
+	// Run external tool synchronously
+	if (exec(exec_string).code !== 0) {
+		echo('Error: git failed.');
+		exit(1);
+	}
 }
