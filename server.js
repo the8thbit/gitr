@@ -1,18 +1,22 @@
 require('shelljs/global');
+var jsesc = require('jsesc');
 
 if (!which('git')) {
 	echo('Sorry, this script requires git.');
 	exit(1);
 }
 
+//generate call to git
 var exec_string = "git";
 process.argv.forEach(function (val, index, array) {
-	if(index >= 2) {
-		exec_string += " " + val;
+	if (val.indexOf(' ') >= 0) {
+		val = "\"" + val + "\"";
+	}
+
+	if (index >= 2) {
+		exec_string += " " + jsesc(val);
 	}
 });
-
-console.log(exec_string);
 
 // Run external tool synchronously
 if (exec(exec_string).code !== 0) {
