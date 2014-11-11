@@ -1,4 +1,5 @@
-require('shelljs/global');
+var shell = require('shelljs/global');
+var colors = require('colors');
 
 if (!which('git')) {
 	echo('Sorry, this script requires git.');
