@@ -39,6 +39,7 @@ function get_params() {
 
 function get_top_dir(current_dir) {
 	if(!current_dir) { current_dir = process.cwd(); }
+	var repo_top_dir = null;
 	while (!repo_top_dir) {
 		var current_dir_children = fs.readdirSync(current_dir);
 		for (var i=0; i < current_dir_children.length; i+=1) {
@@ -47,6 +48,8 @@ function get_top_dir(current_dir) {
 		if (path.resolve(current_dir, '..') === current_dir) { break; }
 		current_dir = path.dirname(current_dir);
 	}
+	
+	return repo_top_dir;
 }
 
 function process_params(params) {
