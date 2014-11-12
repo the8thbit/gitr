@@ -1,10 +1,14 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env node
 
-var shell = require('shelljs/global');
+var shell  = require('shelljs/global');
 var colors = require('colors');
+var store  = require('jfs');
+
+conf_db =  new store('./.gitr/config.json');
+task_db = new store('./.gitr/tasks.json');
 
 if (!which('git')) {
-	echo('Sorry, this script requires git.');
+	echo('Sorry, this program requires git.');
 	exit(1);
 }
 
@@ -31,8 +35,9 @@ function process_params(params) {
 	if (params[0] === "gen") {
 		com_params = strip_param(params);
 		gen(params);
-	} else if (false) {
-		//do something else
+	} else if (params[0] === "gen-world") {
+		com_params = strip_param(params);
+		gen_world(params);
 	} else {
 		com_params = params;
 		run_com("git", com_params);
@@ -47,6 +52,7 @@ function strip_param(params, i) {
 function run_com(command, params) {
 	var exec_string = command + " " +  params.join(" ");
 	// Run external tool synchronously
+	console.log(exec_string);
 	if (exec(exec_string).code !== 0) {
 		echo('Error: execution failed.');
 		exit(1);
@@ -60,15 +66,13 @@ function gen(params) {
 	gen_character(params);
 }
 
+//generate the game world
 function gen_world(params) {
-	//add world generation code here
-	run_com("mkdir", ["./.gitr"]);
+	run_com("mkdir", ["'./.gitr'"]);
 }
 
+//generate a character in the game world
 function gen_character(params) {
 	//add character generation code here
 }
 
-function refresh(params) {
-	run_com("git config color.ui always");
-}
