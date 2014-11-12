@@ -52,7 +52,6 @@ function strip_param(params, i) {
 function run_com(command, params) {
 	var exec_string = command + " " +  params.join(" ");
 	// Run external tool synchronously
-	console.log(exec_string);
 	if (exec(exec_string).code !== 0) {
 		echo('Error: execution failed.');
 		exit(1);
